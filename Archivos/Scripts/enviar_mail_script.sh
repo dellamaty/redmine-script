@@ -69,30 +69,34 @@ fi
 
 
 #------------------------------------
-# Create temporary CSV for the email
+# Check if CSV exists, create if needed
 #------------------------------------
-echo "▶ Creating temporary CSV for the email..."
+CSV_DIR="$BASE_DIR/$ANIO/CSV Files for Script"
+ARCHIVO_CSV="$CSV_DIR/${MES}_redmine.csv"
 
-source "$VENV_DIR/bin/activate"
-python3 "$PYTHON_DIR/cargar_horas.py" "$ARCHIVO_ODS" --create-csv
-CSV_RESULT=$?
+if [ ! -f "$ARCHIVO_CSV" ]; then
+    echo "▶ Creating temporary CSV for the email..."
+    source "$VENV_DIR/bin/activate"
+    python3 "$PYTHON_DIR/cargar_horas.py" "$ARCHIVO_ODS" --create-csv
+    CSV_RESULT=$?
 
-if [ $CSV_RESULT -ne 0 ]; then
-    echo "❌ Error creating CSV for the email"
-    exit 1
+    if [ $CSV_RESULT -ne 0 ]; then
+        echo "❌ Error creating CSV for the email"
+        exit 1
+    fi
+
+    if [ ! -f "$ARCHIVO_CSV" ]; then
+        echo "❌ Generated CSV not found at $ARCHIVO_CSV"
+        exit 1
+    fi
+else
+    echo "ℹ Using existing CSV: $ARCHIVO_CSV"
 fi
 
 
 #------------------------------------
 # Execute email sending
 #------------------------------------
-CSV_DIR="$BASE_DIR/$ANIO/CSV Files for Script"
-ARCHIVO_CSV="$CSV_DIR/${MES}_redmine.csv"
-
-if [ ! -f "$ARCHIVO_CSV" ]; then
-    echo "❌ Generated CSV not found at $ARCHIVO_CSV"
-    exit 1
-fi
 
 echo "▶ Sending email with $ARCHIVO_CSV"
 python3 "$PYTHON_DIR/enviar_mail.py" "$ARCHIVO_CSV"

@@ -77,7 +77,4 @@ if [ $RESULTADO -ne 0 ]; then
 fi
 
 echo "✅ Hours loaded successfully."
-echo ""
-echo "📧 To send the report email, run: ./enviar_mail_script.sh"
-echo "⏭  To advance to the next month, run: ./enviar_mail_script.sh (it will advance automatically after sending)"
 
