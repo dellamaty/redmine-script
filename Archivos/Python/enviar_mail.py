@@ -127,7 +127,7 @@ for proyecto, df_proj in df.groupby("Proyecto"):
         porcentaje = (horas_ticket / total_horas) * 100
         porcentaje_total_proyecto += porcentaje
     
-    resumen_proyectos += f"<h2>{proyecto} [{porcentaje_total_proyecto:.1f}%]</h2>"
+    resumen_proyectos += f"<br><h2>{proyecto} [{porcentaje_total_proyecto:.1f}%]</h2>"
     for ticket_id, df_ticket in df_proj.groupby("Ticket_ID"):
         try:
             issue = redmine.issue.get(ticket_id)
@@ -151,7 +151,7 @@ cuerpo = f"""
 <p>Total de días trabajados: <strong>{total_dias} días</strong><br>
 Total de horas trabajadas: <strong>{total_horas} horas</strong></p>
 
-<h1>Proyectos</h1>
+<h1>Proyectos</h1><br>
 {resumen_proyectos}
 <p>Saludos!</p>
 
