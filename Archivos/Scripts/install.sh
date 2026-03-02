@@ -32,6 +32,28 @@ echo "🔐 Setting execution permissions..."
 chmod +x redmine.sh
 chmod +x Archivos/Scripts/*.sh
 
+# Initialize ultimo_mes.txt with interactive confirmation
+echo ""
+echo "📅 Initial month setup (Archivos/ultimo_mes.txt)"
+CURRENT_PERIOD="$(date +%Y-%m)"
+START_PERIOD="$CURRENT_PERIOD"
+echo "Detected current period: $CURRENT_PERIOD"
+
+read -r -p "Is this the correct starting period? [Y/n]: " PERIOD_CONFIRMATION
+if [[ "$PERIOD_CONFIRMATION" =~ ^([Nn]|[Nn][Oo])$ ]]; then
+    while true; do
+        read -r -p "Enter the starting period (YYYY-MM): " USER_PERIOD
+        if [[ "$USER_PERIOD" =~ ^[0-9]{4}-(0[1-9]|1[0-2])$ ]]; then
+            START_PERIOD="$USER_PERIOD"
+            break
+        fi
+        echo "❌ Invalid format. Please use YYYY-MM (example: 2026-03)."
+    done
+fi
+
+echo "$START_PERIOD" > Archivos/ultimo_mes.txt
+echo "✅ Archivos/ultimo_mes.txt initialized with: $START_PERIOD"
+
 # Create .env.example if it doesn't exist
 echo "📝 Creating .env.example file..."
 if [ ! -f ".env.example" ]; then

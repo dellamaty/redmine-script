@@ -57,7 +57,6 @@ fi
 echo "📧 This will send the report email for ${ANIO}-${MES}"
 echo ""
 echo "⚠️  IMPORTANT: Make sure you have already loaded the hours to Redmine!"
-echo "   If you haven't loaded the hours yet, run: ./cargar_horas_script.sh"
 echo ""
 echo "Do you want to continue and send the email? (s/n)"
 read -r respuesta
